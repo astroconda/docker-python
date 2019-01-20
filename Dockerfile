@@ -40,13 +40,17 @@ ENV TOOLCHAIN_SYSCONF="${TOOLCHAIN}/etc"
 ENV TOOLCHAIN_MAN="${TOOLCHAIN_DATA}/man"
 ENV TOOLCHAIN_PKGCONFIG="${TOOLCHAIN_LIB}/pkgconfig"
 ENV TOOLCHAIN_BUILD="/opt/buildroot"
+ENV PATH="${TOOLCHAIN_BIN}:${PATH}"
 
 ARG PYTHON_VERSION=${PYTHON_VERSION:-3.7.1}
 ARG USER_ACCT=${USER_ACCT:-developer}
 ARG USER_HOME=/home/${USER_ACCT}
+ARG USER_UID=${USER_UID:-1000}
+ARG USER_GID=${USER_GID:-1000}
 
-RUN groupadd ${USER_ACCT} \
-    && useradd -g ${USER_ACCT} -m -d ${USER_HOME} -s /bin/bash ${USER_ACCT} \
+RUN groupadd -g ${USER_GID} ${USER_ACCT} \
+    && useradd -u ${USER_UID} -g ${USER_ACCT} \
+       -m -d ${USER_HOME} -s /bin/bash ${USER_ACCT} \
     && echo "${USER_ACCT}:${USER_ACCT}" | chpasswd \
     && echo "${USER_ACCT} ALL=(ALL)	NOPASSWD: ALL" >> /etc/sudoers
 
