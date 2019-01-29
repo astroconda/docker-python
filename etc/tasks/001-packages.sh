@@ -10,6 +10,7 @@ blddir=builds
 export PATH="${prefix}/bin:${PATH}"
 export CFLAGS="-I${prefix}/include"
 export LDFLAGS="-L${prefix}/lib -Wl,-rpath=${prefix}/lib"
+export PKG_CONFIG_PATH="${prefix}/lib/pkgconfig"
 export PREFIX="${prefix}"
 
 function pre()
@@ -30,6 +31,11 @@ function build()
     do
         chmod +x "${req}"
         "${req}"
+        retval=$?
+        if [[ ${retval} != 0 ]]; then
+            echo "BUILD FAILED: ${req}"
+            exit ${retval}
+        fi
     done
     post
 }

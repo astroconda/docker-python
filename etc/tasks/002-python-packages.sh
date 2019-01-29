@@ -7,6 +7,7 @@ sysconfdir="${TOOLCHAIN_BUILD}/etc"
 reqdir=${sysconfdir}/pip
 
 export PATH="${prefix}/bin:${PATH}"
+export PKG_CONFIG_PATH="${prefix}/lib/pkgconfig"
 export CFLAGS="-I${prefix}/include"
 export LDFLAGS="-L${prefix}/lib -Wl,-rpath=${prefix}/lib"
 
@@ -24,7 +25,12 @@ function build()
     # Iterate over pip requirement files
     for req in ${reqdir}/*
     do
-        pip install --upgrade --progress-bar=off -v -r "${req}"
+        pip install --upgrade --progress-bar=off -r "${req}"
+        retval=$?
+        if [[ ${retval} != 0 ]]; then
+            echo "BUILD FAILED: ${req}"
+            exit ${retval}
+        fi
     done
     post
 }
@@ -32,8 +38,8 @@ function build()
 function post()
 {
     rm -rf ~/.cache/pip
-    [[ -d src ]] && rm -rf src
-    [[ -f gmon.out ]] && rm -rf gmon.out
+    [[ -d src ]] && rm -rf src || true
+    [[ -f gmon.out ]] && rm -rf gmon.out || true
 }
 
 build

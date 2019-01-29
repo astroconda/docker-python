@@ -2,35 +2,6 @@ FROM centos:6.9
 LABEL maintainer="jhunk@stsci.edu" \
       vendor="Space Telescope Science Institute"
 
-RUN yum install -y epel-release \
-    && yum clean all
-
-RUN yum install -y \
-    gcc \
-    gcc-c++ \
-    gcc-gfortran \
-    git \
-    glibc \
-    libuuid-devel \
-    make \
-    perl \
-    pkgconfig \
-    expat-devel \
-    bzip2-devel \
-    gdbm-devel \
-    libffi-devel \
-    ncurses-devel \
-    openssl-devel \
-    readline-devel \
-    sqlite-devel \
-    sudo \
-    tcl-devel \
-    tk-devel \
-    which \
-    xz-devel \
-    zlib-devel \
-    && yum clean all
-
 ENV TOOLCHAIN="/opt/toolchain"
 ENV TOOLCHAIN_BIN="${TOOLCHAIN}/bin"
 ENV TOOLCHAIN_LIB="${TOOLCHAIN}/lib"
@@ -48,13 +19,39 @@ ARG USER_HOME=/home/${USER_ACCT}
 ARG USER_UID=${USER_UID:-1000}
 ARG USER_GID=${USER_GID:-1000}
 
-RUN groupadd -g ${USER_GID} ${USER_ACCT} \
+RUN yum install -y epel-release \
+    && yum install -y \
+        gcc \
+        gcc-c++ \
+        gcc-gfortran \
+        git \
+        glibc \
+        libuuid-devel \
+        make \
+        perl \
+        pkgconfig \
+        expat-devel \
+        bzip2-devel \
+        gdbm-devel \
+        libffi-devel \
+        ncurses-devel \
+        openssl-devel \
+        readline-devel \
+        sqlite-devel \
+        sudo \
+        tcl-devel \
+        tk-devel \
+        wget \
+        which \
+        xz-devel \
+        zlib-devel \
+    && yum clean all \
+    && groupadd -g ${USER_GID} ${USER_ACCT} \
     && useradd -u ${USER_UID} -g ${USER_ACCT} \
        -m -d ${USER_HOME} -s /bin/bash ${USER_ACCT} \
     && echo "${USER_ACCT}:${USER_ACCT}" | chpasswd \
-    && echo "${USER_ACCT} ALL=(ALL)	NOPASSWD: ALL" >> /etc/sudoers
-
-RUN echo export PATH="${TOOLCHAIN_BIN}:\${PATH}" > /etc/profile.d/toolchain.sh \
+    && echo "${USER_ACCT} ALL=(ALL)	NOPASSWD: ALL" >> /etc/sudoers \
+    && echo export PATH="${TOOLCHAIN_BIN}:\${PATH}" > /etc/profile.d/toolchain.sh \
     && echo export MANPATH="${TOOLCHAIN_MAN}:\${MANPATH}" >> /etc/profile.d/toolchain.sh \
     && echo export PKG_CONFIG_PATH="${TOOLCHAIN_PKGCONFIG}:\${PKG_CONFIG_PATH}" >> /etc/profile.d/toolchain.sh
 

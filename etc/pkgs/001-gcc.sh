@@ -12,7 +12,7 @@ url_isl=http://isl.gforge.inria.fr/isl-${version_isl}.tar.bz2
 version_cloog=0.18.4
 url_cloog="http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-${version_cloog}.tar.gz"
 
-sudo yum install -y wget
+# Ensure 64-bit libraries go into /lib
 sudo ln -sf ${TOOLCHAIN_LIB} ${TOOLCHAIN}/lib64
 
 curl -LO ${url}
@@ -49,7 +49,7 @@ pushd ${bld}
             --prefix=${TOOLCHAIN} \
             --libdir=${TOOLCHAIN_LIB} \
             --libexecdir=${TOOLCHAIN_LIB} \
-            --disable-bootstrap \
+            --disable-static \
             --disable-multilib \
             --disable-werror \
             --disable-libunwind-exceptions \
@@ -58,6 +58,8 @@ pushd ${bld}
             --with-system-zlib \
             --with-isl \
             --with-linker-hash-style=gnu \
+            --with-tune=generic \
+            --enable-bootstrap \
             --enable-languages=c,c++,fortran,lto,go \
             --enable-shared \
             --enable-threads=posix \
@@ -77,6 +79,9 @@ pushd ${bld}
 
     make -j${_maxjobs}
     make install-strip
+
+    # Binutils build cannot use this static archive
+    rm -f "${TOOLCHAIN_LIB}/libiberty.a"
 
     # Prevent ldconfig from picking up gdb python scripts
     autoload="${TOOLCHAIN_DATA}/gdb/auto-load${TOOLCHAIN_LIB}"

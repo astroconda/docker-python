@@ -54,7 +54,7 @@ function build()
             zlib-dynamic \
             shared \
             no-ssl3-method
-        make
+        make -j${_maxjobs}
         make install MANDIR="${prefix}/share/man" MANSUFFIX=ssl
     popd
     post
