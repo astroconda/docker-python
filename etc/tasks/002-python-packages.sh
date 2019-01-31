@@ -18,7 +18,7 @@ function build()
     # Iterate over pip requirement files
     for req in ${reqdir}/*
     do
-        pip install --upgrade --progress-bar=off -r "${req}"
+        pip install --upgrade -r "${req}"
         retval=$?
         if [[ ${retval} != 0 ]]; then
             echo "BUILD FAILED: ${req}"
