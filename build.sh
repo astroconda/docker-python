@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT=python
+PROJECT=astroconda/python
 PYTHON_VERSION="${1}"
 if [[ -z ${PYTHON_VERSION} ]]; then
     echo "Need a fully qualified Python version to build. [e.g. 3.7.1]"

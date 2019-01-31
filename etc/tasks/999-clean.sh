@@ -11,6 +11,9 @@ sudo rm -rf "${HOME}"/*
 sudo rm -rf /tmp/*
 sudo rm -rf /var/cache/yum
 
+# Ensure new shared libraries ingested
+sudo ldconfig
+
 for logfile in /var/log/*
 do
     [[ -f ${logfile} ]] && sudo truncate --size=0 "${logfile}"

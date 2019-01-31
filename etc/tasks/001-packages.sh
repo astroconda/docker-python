@@ -1,16 +1,9 @@
 #!/bin/bash
-set -e
 set -x
 
-prefix="${TOOLCHAIN}"
 sysconfdir="${TOOLCHAIN_BUILD}/etc"
 reqdir=${sysconfdir}/pkgs
 blddir=builds
-
-export PATH="${prefix}/bin:${PATH}"
-export CFLAGS="-I${prefix}/include"
-export LDFLAGS="-L${prefix}/lib -Wl,-rpath=${prefix}/lib"
-export PREFIX="${prefix}"
 
 function pre()
 {
@@ -30,6 +23,11 @@ function build()
     do
         chmod +x "${req}"
         "${req}"
+        retval=$?
+        if [[ ${retval} != 0 ]]; then
+            echo "BUILD FAILED: ${req}"
+            exit ${retval}
+        fi
     done
     post
 }
