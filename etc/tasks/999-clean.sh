@@ -4,21 +4,15 @@ if [[ ! -f /.dockerenv ]]; then
     exit 1
 fi
 
-packages=(
-    gcc
-    gcc-c++
-    gcc-gfortran
-)
-sudo yum remove -y "${packages[@]}"
 sudo yum clean all
-
-# Remove all static libraries
-sudo find "${TOOLCHAIN_LIB}" -name '*.a' -delete
 
 sudo rm -rf "${HOME}/.astropy"
 sudo rm -rf "${HOME}"/*
 sudo rm -rf /tmp/*
 sudo rm -rf /var/cache/yum
+
+# Ensure new shared libraries ingested
+sudo ldconfig
 
 for logfile in /var/log/*
 do

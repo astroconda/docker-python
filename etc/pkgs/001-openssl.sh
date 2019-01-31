@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 set -x
 
 name="openssl"
@@ -64,6 +63,7 @@ function post()
 {
     bundle=$(get_system_cacert)
     install -D -m644 "${bundle}" "${prefix}/ssl/cert.pem"
+    rm -rf "${prefix}/share/doc/openssl/html"
     rm -rf "${dest}"
     rm -rf "${tarball}"
     echo "All done."

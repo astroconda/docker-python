@@ -1,15 +1,8 @@
 #!/bin/bash
 set -x
 
-# Uses GLOBAL environment variable: PYTHON_VERSION defined by `docker build` argument
-prefix="${TOOLCHAIN}"
 sysconfdir="${TOOLCHAIN_BUILD}/etc"
 reqdir=${sysconfdir}/pip
-
-export PATH="${prefix}/bin:${PATH}"
-export PKG_CONFIG_PATH="${prefix}/lib/pkgconfig"
-export CFLAGS="-I${prefix}/include"
-export LDFLAGS="-L${prefix}/lib -Wl,-rpath=${prefix}/lib"
 
 function pre()
 {

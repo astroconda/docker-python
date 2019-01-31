@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 set -x
 
 python_version="${PYTHON_VERSION}"
@@ -98,7 +97,7 @@ function build()
             --with-dbmliborder=gdbm:ndbm \
             --with-pymalloc \
             --with-system-expat
-        make -j4
+        make -j${_maxjobs}
         make install
     popd
     post

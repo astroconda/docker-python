@@ -1,17 +1,9 @@
 #!/bin/bash
-set -e
 set -x
 
-prefix="${TOOLCHAIN}"
 sysconfdir="${TOOLCHAIN_BUILD}/etc"
 reqdir=${sysconfdir}/pkgs
 blddir=builds
-
-export PATH="${prefix}/bin:${PATH}"
-export CFLAGS="-I${prefix}/include"
-export LDFLAGS="-L${prefix}/lib -Wl,-rpath=${prefix}/lib"
-export PKG_CONFIG_PATH="${prefix}/lib/pkgconfig"
-export PREFIX="${prefix}"
 
 function pre()
 {
