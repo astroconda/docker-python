@@ -1,4 +1,5 @@
-FROM astroconda/base:1.0.0
+ARG BASE_VERSION=${BASE_VERSION:latest-}
+FROM astroconda/base:${BASE_VERSION}
 LABEL maintainer="jhunk@stsci.edu" \
       vendor="Space Telescope Science Institute"
 
