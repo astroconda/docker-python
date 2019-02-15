@@ -1,5 +1,6 @@
-ARG BASE_VERSION=${BASE_VERSION:latest-}
-FROM astroconda/base:${BASE_VERSION}
+ARG HUB=${HUB:-astroconda}
+ARG BASE_VERSION=${BASE_VERSION:-latest}
+FROM ${HUB}/base:${BASE_VERSION}
 LABEL maintainer="jhunk@stsci.edu" \
       vendor="Space Telescope Science Institute"
 
