@@ -43,6 +43,10 @@ function build()
         export KERNEL_BITS=64
         target="linux-x86_64"
 
+        sed -i -e "s@./demoCA@${TOOLCHAIN}/ssl@" \
+            apps/openssl.cnf \
+            apps/CA.pl.in
+
         ./Configure \
             --prefix="${prefix}" \
             --openssldir="ssl" \
