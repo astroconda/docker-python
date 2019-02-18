@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -xe
 
 python_version="${PYTHON_VERSION}"
 python_basever="${python_version%.*}"
