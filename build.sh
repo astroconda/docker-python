@@ -1,6 +1,6 @@
 #!/bin/bash
 HUB=${3:-astroconda}
-PROJECT=${HUB}/python
+PROJECT=${HUB}/datb-tc-python
 PROJECT_VERSION="${1}"
 BASE_IMG_VERSION=${2:-latest}
 TAGS=()
