@@ -10,7 +10,6 @@ if [[ -z ${PROJECT_VERSION} ]]; then
     exit 1
 fi
 
-set -x
 read \
     PROJECT_VERSION_MAJOR \
     PROJECT_VERSION_MINOR \
@@ -31,6 +30,7 @@ case "${HUB}" in
         docker login
         ;;
 esac
+set -x
 
 TAGS+=( "-t ${PROJECT}:${PROJECT_VERSION}" )
 is_tag_latest=$([[ -f LATEST ]] && [[ $(<LATEST) == ${PROJECT_VERSION} ]] && echo yes)
