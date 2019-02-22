@@ -4,6 +4,13 @@ PROJECT=${HUB}/datb-tc-python
 PROJECT_VERSION="${1}"
 BASE_IMG_VERSION=${2:-latest}
 TAGS=()
+EXTRA=()
+SNAPSHOT=${SNAPSHOT:-}
+
+if [[ -n ${SNAPSHOT} ]]; then
+    EXTRA+=( "--no-cache" )
+    EXTRA+=( "--pull" )
+fi
 
 if [[ -z ${PROJECT_VERSION} ]]; then
     echo "Python version required [e.g. 3.7.1]"
@@ -40,7 +47,9 @@ if [[ -n ${is_tag_latest} ]]; then
     TAGS+=( "-t ${PROJECT}:${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}" )
 fi
 
-docker build ${TAGS[@]} \
+docker build \
+    ${EXTRA[@]} \
+    ${TAGS[@]} \
     --build-arg HUB="${HUB}" \
     --build-arg PYTHON_VERSION="${PROJECT_VERSION}" \
     --build-arg BASE_VERSION="${BASE_IMG_VERSION}" \
