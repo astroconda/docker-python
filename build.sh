@@ -65,15 +65,22 @@ fi
 max_retry=4
 retry=0
 set +e
-while (( retry != max_retry ))
+for tag in "${TAGS[@]}"
 do
-    echo "Push attempt #$(( retry + 1 ))"
-    docker push "${PROJECT}"
-    rv=$?
-    if [[ ${rv} == 0 ]]; then
-        break
-    fi
-    (( retry++ ))
+    # strip argument prefix
+    tag=${tag#"-t"}
+    tag=${tag#" "}
+
+    while (( retry != max_retry ))
+    do
+        echo "Push attempt #$(( retry + 1 ))"
+        docker push "${tag}"
+        rv=$?
+        if [[ ${rv} == 0 ]]; then
+            break
+        fi
+        (( retry++ ))
+    done
 done
 
 exit ${rv}
