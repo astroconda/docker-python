@@ -1,6 +1,6 @@
 ARG HUB=${HUB:-astroconda}
 ARG BASE_VERSION=${BASE_VERSION:-latest}
-FROM ${HUB}/base:${BASE_VERSION}
+FROM ${HUB}/datb-tc-base:${BASE_VERSION}
 LABEL maintainer="jhunk@stsci.edu" \
       vendor="Space Telescope Science Institute"
 
